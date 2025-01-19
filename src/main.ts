@@ -1,13 +1,13 @@
+import { table } from "console";
 import "./style.css";
 import $ from "jquery";
 
 const state = {
   optionIds: [] as number[],
   optionsId: 0,
-  optionsError: "",
   fieldIds: [] as number[],
   fieldsId: 0,
-  fieldErrors: [] as string[],
+  tableHeaders: [] as string[],
   getNewOptionId() {
     const id = this.optionsId++;
     this.optionIds.push(id);
@@ -155,27 +155,42 @@ $(
   $("#generate-table-form").on("submit", (e) => {
     e.preventDefault();
     let data = getDataForTable();
-    generateTable(data);
+    const tableHeaders = data.map((datum) => datum.name);
+    console.log(tableHeaders)
+    if (JSON.stringify(state.tableHeaders) === JSON.stringify(tableHeaders)) {
+      console.log("add")
+      addDataToTable(data);
+    } else {
+      console.log("generate");
+      generateTableHeader(tableHeaders);
+      addDataToTable(data);
+      state.tableHeaders = tableHeaders;
+    }
     $("#table-header").removeClass("hidden");
   })
 );
 
-const generateTable = (data: { name: string; value: string }[]) => {
+const addDataToTable = (data: { value: string }[]) => {
+  const $tableRow = $("<tr></tr>");
+  data.forEach((datum) => {
+    $tableRow.append(`<td>${datum.value}</td>`);
+  });
+  $(".table").append($tableRow);
+};
+
+const generateTableHeader = (data: string[]) => {
   $("#generated-table-container").empty();
 
-  const table = $("<table class='table'></table>");
+  const $table = $("<table class='table'></table>");
 
-  const header = $("<tr></tr>").append("<th>Name</th>", "<th>Value</th>");
-  table.append(header);
+  const $header = $("<tr></tr>");
 
-  data.forEach((row) => {
-    const tableRow = $("<tr></tr>");
-    tableRow.append(`<td>${row.name}</td>`);
-    tableRow.append(`<td>${row.value}</td>`);
-    table.append(tableRow);
+  data.forEach((header) => {
+    $header.append(`<th>${header}</th>`);
   });
+  $table.append($header);
 
-  $("#generated-table-container").append(table);
+  $("#generated-table-container").append($table);
 };
 
 const getDataForTable = () => {
