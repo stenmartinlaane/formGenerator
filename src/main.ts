@@ -48,14 +48,14 @@ $(
     const filedId = state.getNewFieldId();
     const fieldType = $("#input-form-dropdown").val();
     const fieldName = $(`#name-field`).val() as string;
-    let input;
+    let $input;
     if (fieldType === "select") {
-      input = makeSelectElement(filedId);
+      $input = makeSelectElement(filedId);
     } else {
-      input = $(`<input id="g-input-${filedId}" required ></input>`);
+      $input = $(`<input id="g-input-${filedId}" required ></input>`);
     }
-    let inputSection = makeInputSection(input, fieldName, filedId);
-    $("#generate-table-form-inputs").append(inputSection);
+    let $inputSection = makeInputSection($input, fieldName, filedId);
+    $("#generate-table-form-inputs").append($inputSection);
     setOptionFieldsToStartState();
     emptyNameField();
     handleGenerateTableFormVisibility();
@@ -67,7 +67,6 @@ $(
     const target = e.target as HTMLSelectElement;
     setOptionFieldsToStartState();
     if (target.value === "select") {
-      console.log("here");
       $("#add-option-btn").removeClass("hidden");
       $("#select-header").removeClass("hidden");
     } else {
@@ -106,7 +105,6 @@ const handleAddInputOption = () => {
     if (state.optionIds.length === 1) {
       return;
     }
-    console.log(state.optionIds);
     state.optionIds = state.optionIds.filter((o) => o !== id);
     $(`#section-${id}`).remove();
   });
@@ -114,10 +112,10 @@ const handleAddInputOption = () => {
 
 const makeSelectElement = (filedId: number) => {
   let $select = $(`<select id="g-input-${filedId}" ></select>`);
-  state.optionIds.forEach((oId) => {
-    const inputValue = $(`#option-${oId}`).val();
+  state.optionIds.forEach((optionId) => {
+    const inputValue = $(`#option-${optionId}`).val();
     $select.append(
-      `<option id='option-${filedId}-${oId}' value='${inputValue}'>${inputValue}</option>`
+      `<option id='option-${filedId}-${optionId}' value='${inputValue}'>${inputValue}</option>`
     );
   });
   return $select;
@@ -128,9 +126,9 @@ const makeInputSection = (
   fieldName: string,
   id: number
 ) => {
-  const inputSectionId = `generate-table-input-section-${id}`;
+  const $inputSectionId = `generate-table-input-section-${id}`;
   const $inputSection = $(
-    `<section id="${inputSectionId}" class="input-section flex-row p-1" required></section>`
+    `<section id="${$inputSectionId}" class="input-section flex-row p-1" required></section>`
   );
   $($inputSection).append(
     `<label id='g-name-${id}' value='${fieldName}' class="input-label" for="input-${id}">${fieldName}</label>`
@@ -139,7 +137,7 @@ const makeInputSection = (
   const $removeButton = $(`<button class="remove-btn">Remove</button>`).on(
     "click",
     () => {
-      $(`#${inputSectionId}`).remove();
+      $(`#${$inputSectionId}`).remove();
       state.fieldIds = state.fieldIds.filter((i) => id !== i);
       handleGenerateTableFormVisibility();
     }
@@ -155,12 +153,9 @@ $(
     e.preventDefault();
     let data = getDataForTable();
     const tableHeaders = data.map((datum) => datum.name);
-    console.log(tableHeaders)
     if (JSON.stringify(state.tableHeaders) === JSON.stringify(tableHeaders)) {
-      console.log("add")
       addDataToTable(data);
     } else {
-      console.log("generate");
       generateTableHeader(tableHeaders);
       addDataToTable(data);
       state.tableHeaders = tableHeaders;
@@ -193,14 +188,11 @@ const generateTableHeader = (data: string[]) => {
 };
 
 const getDataForTable = () => {
-  console.log(state.fieldIds);
   const data: { name: string; value: string }[] = [];
 
-  state.fieldIds.forEach((f) => {
-    const value = $(`#g-input-${f}`).val() as string;
-    const name = $(`#g-name-${f}`).html() as string;
-    console.log(name);
-    console.log(value);
+  state.fieldIds.forEach((fieldId) => {
+    const value = $(`#g-input-${fieldId}`).val() as string;
+    const name = $(`#g-name-${fieldId}`).html() as string;
     data.push({ name, value });
   });
   return data;

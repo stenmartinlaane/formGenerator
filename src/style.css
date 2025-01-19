@@ -18,7 +18,7 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
-  text: black
+  text: black;
 }
 
 h1 {
@@ -43,7 +43,7 @@ button {
   background-color: #e0e0e0;
   cursor: pointer;
   transition: border-color 0.25s;
-  color: black
+  color: black;
 }
 button:hover {
   border-color: rgb(52, 184, 42);
