@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    <script type="module" src="/src/main.ts"></script>
+    <div id="app">
+      <form id="input-form" class="m-1">
+        <label for="name-field" >Name</label>
+        <input id="name-field" required></input>
+        <label></label>
+        <select id="input-form-dropdown">
+          <option value="text">text</option>
+          <option value="select">select</option>
+        </select>
+        <h3 id="select-header" class="hidden">Insert values for select input</h3>
+        <section id="option-fields">
+        </section>
+        <section class="m-1">
+          <button type="button" id="add-option-btn" class="hidden">Add another value</button>
+        </section>
+        <button id="input-form-submit-btn" type="submit">Add field to form</button>
+      </form>
+      <form id="generate-table-form" class="hidden m-1">
+        <h1>Generate table form</h1>
+        <section id="generate-table-form-inputs" class="p-1"></section>
+        <button id="generate-table-btn" type="submit" >Save</button>
+      </form>
+      <div class="m-1">
+        <h1 id="table-header" class="hidden">Table</h1>
+        <div id="generated-table-container">
+      </div>
+      </section>
+    </div>
+  </body>
+</html>
