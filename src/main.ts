@@ -1,4 +1,3 @@
-import { table } from "console";
 import "./style.css";
 import $ from "jquery";
 
